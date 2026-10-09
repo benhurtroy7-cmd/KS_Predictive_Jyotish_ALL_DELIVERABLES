@@ -16,8 +16,28 @@ st.markdown(
     " predictions seamlessly."
 )
 
+# 1. OCR Chart / PDF Extraction (Now directly on the main page!)
+st.subheader("📂 OCR Chart / PDF Extraction")
+st.markdown(
+    "Upload a Kundli image or PDF chart to automatically read birth details."
+)
+uploaded_file = st.file_uploader(
+    "Upload Kundli Image or PDF", type=["png", "jpg", "jpeg", "pdf"]
+)
 
-# 1. City Database & Partial Search
+if uploaded_file is not None:
+  try:
+    image = Image.open(uploaded_file)
+    ocr_text = pytesseract.image_to_string(image)
+    st.success("OCR Extracted Successfully!")
+    with st.expander("View Extracted Text"):
+      st.text(ocr_text)
+  except Exception as e:
+    st.error(f"OCR Error: {e}")
+
+st.markdown("---")
+
+# 2. City Database & Partial Search
 @st.cache_data
 def load_cities():
   return [{
@@ -45,22 +65,6 @@ def load_cities():
 
 
 cities = load_cities()
-
-# 2. OCR Chart Upload (Sidebar)
-st.sidebar.header("📂 OCR Chart / PDF Extraction")
-uploaded_file = st.sidebar.file_uploader(
-    "Upload Kundli Image or PDF", type=["png", "jpg", "jpeg", "pdf"]
-)
-
-if uploaded_file is not None:
-  try:
-    image = Image.open(uploaded_file)
-    ocr_text = pytesseract.image_to_string(image)
-    st.sidebar.success("OCR Extracted Successfully!")
-    with st.sidebar.expander("View Extracted Text"):
-      st.text(ocr_text)
-  except Exception as e:
-    st.sidebar.error(f"OCR Error: {e}")
 
 # 3. Birthplace Search & Auto-Population
 st.subheader("📍 Birthplace & Coordinates")
@@ -114,7 +118,6 @@ st.markdown("---")
 
 # 4. KP Engine Execution
 if st.button("🚀 Run KP Prediction Engine"):
-  # Convert to standard time display string
   time_str = f"{birth_hour}:{birth_minute} {ampm}"
 
   st.success("Processing chart through KP & Prediction Engine...")

@@ -90,8 +90,10 @@ with col1:
 with col2:
   timezone = st.text_input("Timezone", value=tz)
 
-# Date & Time Inputs (Explicitly allowing range back to 1900)
-d_col1, d_col2 = st.columns(2)
+# Date & Explicit AM/PM Time Inputs
+st.subheader("📅 Birth Date & Time")
+d_col1, d_col2, d_col3, d_col4 = st.columns(4)
+
 with d_col1:
   birth_date = st.date_input(
       "Birth Date",
@@ -100,16 +102,25 @@ with d_col1:
       max_value=datetime.date.today(),
   )
 with d_col2:
-  birth_time = st.time_input("Birth Time", value=datetime.time(12, 0))
+  birth_hour = st.selectbox("Hour", list(range(1, 13)), index=11)
+with d_col3:
+  birth_minute = st.selectbox(
+      "Minute", [f"{m:02d}" for m in range(0, 60)], index=0
+  )
+with d_col4:
+  ampm = st.selectbox("AM/PM", ["AM", "PM"], index=1)
 
 st.markdown("---")
 
 # 4. KP Engine Execution
 if st.button("🚀 Run KP Prediction Engine"):
+  # Convert to standard time display string
+  time_str = f"{birth_hour}:{birth_minute} {ampm}"
+
   st.success("Processing chart through KP & Prediction Engine...")
   st.markdown("### 📊 Results & Predictions")
   st.write(f"**Location:** Lat: {latitude}, Lon: {longitude} ({timezone})")
-  st.write(f"**Date & Time:** {birth_date} {birth_time}")
+  st.write(f"**Date & Time:** {birth_date} at {time_str}")
   st.info(
       "Chart calculation completed successfully using your preserved KP engine"
       " rules."

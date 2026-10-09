@@ -90,10 +90,15 @@ with col1:
 with col2:
   timezone = st.text_input("Timezone", value=tz)
 
-# Date & Time Inputs
+# Date & Time Inputs (Explicitly allowing range back to 1900)
 d_col1, d_col2 = st.columns(2)
 with d_col1:
-  birth_date = st.date_input("Birth Date")
+  birth_date = st.date_input(
+      "Birth Date",
+      value=datetime.date(1971, 1, 23),
+      min_value=datetime.date(1900, 1, 1),
+      max_value=datetime.date.today(),
+  )
 with d_col2:
   birth_time = st.time_input("Birth Time", value=datetime.time(12, 0))
 

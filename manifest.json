@@ -1,0 +1,15 @@
+{
+  "name": "KS Predictive Jyotish",
+  "short_name": "KS Jyotish",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff4b4b",
+  "icons": [
+    {
+      "src": "https://streamlit.io/images/brand/streamlit-mark-color.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
